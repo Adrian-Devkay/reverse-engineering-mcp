@@ -89,9 +89,22 @@ def _strings(data: bytes, min_length: int) -> list[dict[str, Any]]:
     for match in pattern.finditer(data):
         found.append({"offset": match.start(), "encoding": "ascii", "value": match.group().decode("ascii")})
 
-    wide = re.compile((rb"(?:[ -~]\x00){%d,}") % min_length)
+    # Use a lookahead so a false start at the tail of an ASCII string does
+    # not hide the real UTF-16LE candidate that follows it.
+    wide = re.compile((rb"(?=((?:[ -~]\x00){%d,}))") % min_length)
+    accepted_wide_ranges: list[tuple[int, int]] = []
     for match in wide.finditer(data):
-        raw = match.group()[::2]
+        # A printable byte immediately before the match means the regex
+        # started at the tail of an ASCII string. Avoid reporting that
+        # overlap as a second, shifted UTF-16LE string.
+        if match.start() > 0 and 0x20 <= data[match.start() - 1] <= 0x7E:
+            continue
+        raw_bytes = match.group(1)
+        end = match.start() + len(raw_bytes)
+        if any(start <= match.start() < prior_end for start, prior_end in accepted_wide_ranges):
+            continue
+        accepted_wide_ranges.append((match.start(), end))
+        raw = raw_bytes[::2]
         found.append({"offset": match.start(), "encoding": "utf-16le", "value": raw.decode("ascii")})
     return sorted(found, key=lambda item: item["offset"])
 
