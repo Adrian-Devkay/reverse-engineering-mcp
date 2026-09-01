@@ -4,7 +4,6 @@
 import argparse
 import hashlib
 import json
-import os
 import platform
 import stat
 import sys
@@ -24,6 +23,10 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("artifact", type=Path, help="Existing artifact to hash; it is never modified")
     parser.add_argument("case_dir", type=Path, help="New or existing directory for case.json")
+    parser.add_argument("--case-id", help="Stable case identifier; defaults to a name derived from the artifact hash")
+    parser.add_argument("--authorization", default="TO_BE_CONFIRMED", help="Authorization basis recorded in the local manifest")
+    parser.add_argument("--analyst", default="UNSPECIFIED", help="Analyst label recorded in the local manifest")
+    parser.add_argument("--exclude", action="append", default=[], help="Excluded surface; may be supplied more than once")
     args = parser.parse_args()
 
     artifact = args.artifact.expanduser().resolve()
@@ -34,15 +37,19 @@ def main() -> int:
     if not stat.S_ISREG(mode):
         parser.error(f"artifact is not a regular file: {artifact}")
 
+    digest = sha256_file(artifact)
+    case_id = args.case_id or f"case-{artifact.stem}-{digest[:12]}"
     case_dir.mkdir(parents=True, exist_ok=True)
     record = {
-        "schema": "apex-reverse-engineering/case-v1",
+        "schema": "reverse-engineering-mcp/case-v1",
+        "case_id": case_id,
         "created_utc": datetime.now(timezone.utc).isoformat(),
-        "scope": {"authorization": "TO_BE_CONFIRMED", "target": str(artifact), "exclusions": []},
+        "scope": {"authorization": args.authorization, "target": str(artifact), "exclusions": args.exclude},
+        "analyst": args.analyst,
         "artifact": {
             "path": str(artifact),
             "size_bytes": artifact.stat().st_size,
-            "sha256": sha256_file(artifact),
+            "sha256": digest,
             "mtime_utc": datetime.fromtimestamp(artifact.stat().st_mtime, timezone.utc).isoformat(),
         },
         "environment": {"platform": platform.platform(), "python": sys.version.split()[0]},
