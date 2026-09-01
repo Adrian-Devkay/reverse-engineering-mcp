@@ -5,58 +5,115 @@ description: "Perform authorized, evidence-driven reverse engineering of binarie
 
 # Reverse engineering-mcp
 
-Use this skill when the user asks to understand, decompile, debug, instrument, compare, emulate, or document an existing binary, application, firmware image, protocol, file format, or malware sample. It is designed for advanced work, but it does not imply permission to access or modify a target.
+## Mission
 
-## Operating contract
+Produce defensible reverse-engineering conclusions from authorized artifacts. The skill coordinates static analysis, controlled execution, emulation, instrumentation, protocol reasoning, vulnerability triage, and reporting while preserving evidence and avoiding operational abuse.
 
-1. Establish scope before touching the target. Confirm that the sample, device, account, network, or service is owned by the user or covered by explicit authorization. If authorization or scope is unclear, ask for it and limit the response to a high-level plan.
-2. Preserve evidence. Never alter the original artifact. Record SHA-256, size, timestamps, provenance, architecture, relevant tool versions, environment assumptions, and every material command or transformation. Use isolated copies and snapshots.
-3. Select the smallest sufficient analysis mode. Read [references/modes.md](references/modes.md) when the target type or next technique is not obvious. Read [references/evidence.md](references/evidence.md) when producing a case record or report.
-4. Work from hypotheses, not guesses: intake and triage, static analysis, controlled dynamic analysis, hypothesis testing, impact assessment, and reporting. Skip stages that add no evidence, but state what was not tested.
-5. Prefer read-only, offline, and reversible actions. Do not contact external infrastructure, submit credentials, alter production systems, or execute an unknown sample outside an appropriately isolated lab.
-6. Separate observation from inference. For each conclusion, cite the artifact, offset/address, trace, packet, log, or experiment that supports it; label confidence and unresolved alternatives.
-7. Automate repeatable work where it improves reliability. Check whether tools are installed before relying on them, keep scripts deterministic, and save machine-readable outputs alongside human-readable notes.
+Use this skill when the user asks to understand, decompile, debug, instrument, compare, emulate, fuzz, or document an existing binary, application, firmware image, protocol, file format, or suspicious sample. It does not grant permission to access a target merely because the target is available.
 
-## MCP routing
+## Non-negotiable operating contract
 
-When available, use the local read-only MCP described in [references/mcp.md](references/mcp.md) for hash-first binary triage, sections, symbols, strings, and bounded byte previews. Treat MCP results as evidence, not conclusions; corroborate important claims with a second observation or an appropriate analyzer. Keep the MCP allowlist restricted to authorized case directories.
+1. Establish scope before touching the target: owner or authorization basis, exact artifact/device/service, permitted techniques, time window, network limits, data handling, and stop conditions.
+2. Preserve the original artifact. Work from a copy, record SHA-256 and size first, and retain provenance, timestamps, tool versions, transformations, and important commands.
+3. Prefer offline, read-only, reversible analysis. Never submit credentials, contact real command-and-control infrastructure, alter production systems, or flash hardware during ordinary analysis.
+4. Separate observations from inferences. Label claims as `Observed`, `Inferred`, or `Unknown`; cite offsets, addresses, traces, packets, logs, or repeatable experiments.
+5. Use hypotheses and acceptance criteria. Every expensive or execution-capable action must answer a defined question and state what result would confirm or weaken the hypothesis.
+6. Cross-check important conclusions with an independent view: decompiler versus assembly, static structure versus runtime trace, or format hypothesis versus differential input/output.
+7. State coverage and limitations. A quiet trace, missing symbol, incomplete emulation, or non-reproduced crash is not proof of absence.
 
-## Capability matrix
+## Analysis lifecycle
 
-Treat every applicable layer below as a high-capability backend, while keeping the analysis bounded by authorization, evidence, and target format:
+Follow this lifecycle unless the user requests a narrower task. Read [references/workflow.md](references/workflow.md) for the detailed phase checklist.
 
-- Triage and corroboration: LIEF, Capstone, YARA, radare2, `file`, ELF/PE metadata, entropy, strings, and mitigations.
-- Deep static analysis: Ghidra MCP with function recovery, decompilation, disassembly, call graphs, cross-references, namespaces, and byte-pattern search.
-- Program reasoning: angr and Unicorn for bounded CFG, path, and emulation hypotheses; never treat symbolic output as proof without corroboration.
-- Dynamic observation: GDB/gdbserver, Frida, and QEMU user-mode emulation in an isolated lab with explicit execution approval.
-- Malware and suspicious-code triage: FLOSS, capa, YARA, controlled traces, configuration extraction, and indicator validation.
-- Firmware and multi-architecture work: binwalk when available, partition/boot-chain inspection, QEMU/Unicorn emulation, and architecture-aware static cross-checks.
-- Reproducibility: hash-first case manifests, pinned tool versions, preserved commands, offsets, traces, and machine-readable evidence.
+### Phase 0: Scope gate
 
-“High capability” means the relevant backend is available and used appropriately; it does not mean an unknown sample is executed automatically or that a physical device can be modified without a separate authorization and recovery plan.
+If authorization or scope is unclear, stop at a high-level plan. Do not create a case record, execute code, bypass access controls, contact a service, upload a sample, or alter a device until the missing boundary is resolved.
 
-## Advanced analysis expectations
+### Phase 1: Intake and integrity
 
-- Recover behavior across compiler optimizations, stripped symbols, packing, obfuscation, asynchronous control flow, and multiple architectures when applicable.
-- Correlate static structure with runtime evidence: call graphs, data-flow, memory state, system calls, IPC, file changes, network traces, and configuration.
-- For protocols and formats, infer grammars and state machines from differential observations; preserve captures and distinguish confirmed fields from hypotheses.
-- For vulnerability work, explain root cause, reachability, affected conditions, safe validation, impact, and remediation. Prefer a non-destructive reproducer over a weaponized exploit.
-- For firmware or hardware, document boot chain, partitions, update trust, debug interfaces, and emulation limitations; do not flash or modify a device without explicit authorization and a recovery path.
-- For malware, extract behavior and indicators in a sandbox, avoid live command-and-control, and report containment and detection opportunities.
+Create a target inventory containing artifact name, source, format, architecture, size, SHA-256, timestamps, suspected runtime, and known exclusions. Use [scripts/init_case.py](scripts/init_case.py) for a deterministic manifest. Never place generated case data in the public repository.
 
-## Safety boundary
+### Phase 2: Triage
 
-Decline or redirect requests whose primary purpose is unauthorized access, credential theft, persistence, evasion, destructive action, exfiltration, or bypassing access controls. When a dual-use technique is necessary for an authorized assessment, keep it scoped to the supplied target, use safe validation, and stop before deployment or operational abuse.
+Identify file format, architecture, entry point, sections/segments, imports/exports, symbols, strings, entropy, compiler or packer clues, signing, and mitigation flags. Start with the local read-only MCP when available. Record both positive and negative observations.
 
-## Deliverable standard
+### Phase 3: Static reconstruction
 
-Unless the user requests a different format, return:
+Recover functions, control flow, data flow, call graphs, cross-references, namespaces, types, resources, configuration, and trust boundaries. Treat decompiler output as a hypothesis. Confirm security-relevant paths against disassembly and raw bytes, especially parsers, deserializers, update logic, crypto/key handling, privilege transitions, IPC, and error paths.
 
-- scope, authorization assumption, and target inventory;
-- artifact hashes and analysis environment;
-- method and evidence-backed findings;
-- confidence, limitations, and unanswered questions;
-- impact and prioritized remediation or detection guidance;
-- an appendix of reproducible commands, scripts, offsets, traces, and tool outputs where safe to share.
+### Phase 4: Hypothesis testing
 
-Use [scripts/init_case.py](scripts/init_case.py) when a new case needs a deterministic artifact manifest. Do not create a case record for a target that has not passed the scope check.
+Choose the least invasive technique that can discriminate between competing explanations. Use Capstone or radare2 for assembly corroboration, Ghidra for deep structure, angr/Unicorn for bounded reasoning, and differential specimens for protocols and formats. Preserve the exact inputs and expected observations.
+
+### Phase 5: Controlled dynamic analysis
+
+Use GDB/gdbserver, Frida, QEMU, or a sandbox only inside an isolated, revertible lab. Disable or simulate networking by default, remove credentials and sensitive mounts, snapshot before execution, and capture process, syscall, memory, file, IPC, and network evidence as appropriate. Dynamic execution requires explicit authorization for the sample and question.
+
+### Phase 6: Correlation and triage
+
+Build a source-to-behavior chain: input or trust boundary → parser/state transition → relevant function or instruction → observable effect → impact. For vulnerabilities, distinguish root cause, reachability, preconditions, exploitability, affected versions, impact, and remediation. Prefer a minimal non-destructive reproducer over a weaponized exploit.
+
+### Phase 7: Reporting
+
+Use [references/report-template.md](references/report-template.md) unless another format is requested. Include scope, integrity, environment, method, evidence table, confidence, limitations, impact, remediation/detection guidance, open questions, and safe reproduction details.
+
+## Backend routing
+
+Select the smallest sufficient set, then escalate when evidence is blocked:
+
+| Question | Preferred backend | Required corroboration |
+| --- | --- | --- |
+| What is this file? | LIEF, `file`, read-only MCP | Hash and format metadata |
+| What does this function do? | Ghidra MCP | Assembly, callers/callees, or data-flow |
+| Where is a byte pattern or API used? | Ghidra search, radare2, YARA | Address and surrounding bytes |
+| Can a path reach a condition? | angr or bounded Unicorn | Concrete constraints or a static path |
+| What happens at runtime? | GDB, Frida, QEMU, sandbox | Reproducible trace and isolation record |
+| Is code packed or obfuscated? | Entropy, FLOSS, capa, Ghidra, radare2 | Section layout, decoded strings, or behavior |
+| Is a firmware image compound? | binwalk, strings, QEMU/Unicorn | Offsets, extracted hashes, and emulation limits |
+| How does a protocol behave? | Controlled specimens, Scapy/boofuzz, differential tests | Preserved captures and state-machine evidence |
+
+The local MCP described in [references/mcp.md](references/mcp.md) is deterministic and read-only. The Ghidra backend is for deep static analysis; its mutation tools require explicit approval and its project cache must remain separate from samples. Shell commands and execution-capable backends are fallback or hypothesis-testing surfaces, not substitutes for an evidence record.
+
+## Evidence and confidence
+
+For each material finding, maintain:
+
+- **Claim:** one precise statement, not a bundle of assumptions.
+- **Evidence:** file, hash, offset/address, trace, packet, log, or experiment identifier.
+- **Interpretation:** why the evidence supports the claim.
+- **Alternatives:** plausible explanations not ruled out.
+- **Confidence:** high, medium, or low, with the reason.
+- **Status:** confirmed, needs reproduction, blocked, or disproven.
+
+Important findings should have two independent anchors when practical. Use [references/case-schema.md](references/case-schema.md) for the recommended machine-readable structure.
+
+## Specialized modes
+
+Read [references/modes.md](references/modes.md) and [references/tool-routing.md](references/tool-routing.md) when the target is not a straightforward native binary.
+
+- **Malware or suspicious code:** quarantine first; extract capabilities, configuration, persistence, indicators, and behavior without live command-and-control.
+- **Vulnerability analysis:** prove the unsafe boundary and reachability before discussing severity; do not infer remote exploitability from a suspicious instruction or an unverified crash.
+- **Firmware and hardware:** document boot chain, partitions, update trust, debug interfaces, and recovery path; do not flash or change boot state without explicit authorization.
+- **Protocols and file formats:** infer grammar and state transitions from controlled differential observations; mark guessed semantics as hypotheses.
+- **Managed/mobile targets:** identify runtime, packaging, permissions, IPC, signing, exported components, storage, and native bridges before analyzing behavior.
+- **Obfuscation and anti-analysis:** document the mechanism and its effect before neutralization; work on copies and preserve the original behavior.
+
+## Execution and safety boundary
+
+GDB/gdbserver, Frida, QEMU, fuzzers, and sandbox runners can execute target-controlled code even when used for observation. Require a disposable VM or equivalent isolation, a clean snapshot, disabled/simulated networking, no real credentials, and an explicit sample-specific authorization. Pause before external network access, production interaction, firmware flashing, authentication/licensing bypass, or exploit testing outside a local authorized lab.
+
+Decline or redirect requests whose primary purpose is unauthorized access, credential theft, persistence, evasion, destructive action, exfiltration, or bypassing a security control. A defensive toy example, static study plan, or analysis of an owned sample is acceptable when operational scope is absent.
+
+## Reproducibility standard
+
+Return, unless the user requests a different format:
+
+1. Scope, authorization assumption, exclusions, and target inventory.
+2. Artifact hashes, environment, tool versions, and containment.
+3. Ordered method and analysis timeline.
+4. Evidence-backed findings with confidence and alternatives.
+5. Impact, remediation, detection, or compatibility guidance.
+6. Limitations, unanswered questions, and next experiments.
+7. A safe appendix of commands, scripts, offsets, traces, captures, and output references.
+
+Keep generated manifests, samples, logs, credentials, local paths, and private identifiers outside this public skill repository.
