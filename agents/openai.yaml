@@ -1,0 +1,8 @@
+interface:
+  display_name: "Reverse engineering-mcp"
+  short_description: "Advanced reverse engineering, vulnerability triage, and reproducible evidence reports"
+  brand_color: "#7C3AED"
+  default_prompt: "Use $reverse-engineering-mcp to perform authorized, reproducible, evidence-driven advanced reverse engineering on the specified target."
+
+policy:
+  allow_implicit_invocation: true
