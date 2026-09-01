@@ -1,24 +1,100 @@
 # Reverse engineering-mcp
 
-An advanced, evidence-driven, and reproducible Codex skill for authorized analysis of binaries, applications, firmware, protocols, file formats, and suspicious samples.
+![Validation](actions/workflows/validate.yml/badge.svg)
 
-## Included
+An advanced, evidence-driven, reproducible Codex skill for authorized reverse engineering of binaries, applications, firmware, protocols, file formats, and suspicious samples.
 
-- Hash-first, read-only binary triage and bounded byte analysis
-- Deep static-analysis routing through Ghidra MCP
-- Coordinated routing for Capstone, radare2, angr, Unicorn, GDB, Frida, QEMU, YARA, capa, FLOSS, and binwalk
-- Authorization checks, evidence preservation, hypothesis testing, confidence tracking, and reproducible reporting
+## Why this exists
 
-## Install as a Codex skill
+Reverse engineering quality depends on more than a decompiler. This skill provides a disciplined investigation loop that preserves artifact integrity, routes questions to appropriate static or dynamic backends, separates observations from hypotheses, and produces a report another analyst can reproduce.
 
-Copy this repository into the Codex skills directory using the folder name `reverse-engineering-mcp`, then invoke it as `$reverse-engineering-mcp`.
+## Capabilities
 
-The optional local MCP server uses the dependencies in `requirements-mcp.txt`. Configure `APEX_MCP_ALLOWED_ROOTS` with only authorized case directories. Keep interpreter paths, tool locations, project caches, samples, logs, and credentials in local configuration rather than in this repository.
+| Area | Coverage |
+| --- | --- |
+| Binary triage | Hashes, LIEF metadata, sections, symbols, imports/exports, strings, entropy, mitigations |
+| Deep static analysis | Ghidra MCP, function recovery, decompilation, disassembly, call graphs, xrefs, namespaces, byte search |
+| Program reasoning | angr and Unicorn for bounded CFG, path, and emulation hypotheses |
+| Dynamic observation | GDB/gdbserver, Frida, QEMU user-mode emulation, isolated sandbox workflows |
+| Malware triage | YARA, capa, FLOSS, configuration and indicator extraction, controlled behavior timelines |
+| Firmware and formats | binwalk, partition and boot-chain inspection, multi-architecture analysis, differential specimens |
+| Evidence | Hash-first case manifests, confidence labels, evidence tables, reproducibility appendices |
 
-## Safety
+## Investigation model
 
-This skill is for authorized analysis only. It does not authorize execution, external network access, firmware flashing, authentication bypass, credential access, or exploit deployment. Dynamic analysis must use an isolated lab and an explicit scope.
+```text
+scope gate
+    -> integrity and intake
+    -> bounded triage
+    -> static reconstruction
+    -> hypothesis test
+    -> controlled dynamic observation
+    -> independent correlation
+    -> findings and remediation report
+```
 
-## Privacy
+The skill escalates only when the current evidence cannot answer the question. Dynamic execution, network access, hardware changes, and exploit validation remain explicitly gated.
 
-This repository intentionally contains no user samples, logs, credentials, virtual environments, host-specific configuration, or machine-specific absolute paths.
+## Install
+
+Copy the repository into the Codex skills directory under the folder name `reverse-engineering-mcp`, then invoke it as `$reverse-engineering-mcp`.
+
+The optional read-only MCP server can be installed in an isolated environment:
+
+```bash
+python3 -m venv .venv
+. .venv/bin/activate
+python -m pip install -r requirements-mcp.txt
+python mcp_server.py
+```
+
+For extended analysis, install the backends listed in `requirements-analysis.txt` and expose their executables through a local `PATH`. Ghidra MCP is an optional separate backend; keep its project cache outside the sample directory and set `APEX_GHIDRA_PROJECT_DIR` locally.
+
+## MCP configuration
+
+Use absolute paths in local configuration, not in this repository. The essential safety setting is an allowlist containing only authorized case directories:
+
+```toml
+[mcp_servers.reverse_engineering_binary]
+command = "/absolute/path/to/skill/.venv/bin/python"
+args = ["/absolute/path/to/skill/mcp_server.py"]
+
+[mcp_servers.reverse_engineering_binary.env]
+APEX_MCP_ALLOWED_ROOTS = "/tmp:/absolute/path/to/authorized-case"
+```
+
+The local server is read-only with respect to analyzed artifacts. It hashes, parses, scans, and reads bounded ranges; it does not execute samples, make network connections, or modify the input file.
+
+## Documentation map
+
+- [`SKILL.md`](SKILL.md): core decision contract and routing rules
+- [`references/workflow.md`](references/workflow.md): phase-by-phase investigation checklist
+- [`references/modes.md`](references/modes.md): target-specific playbooks
+- [`references/tool-routing.md`](references/tool-routing.md): backend selection and escalation criteria
+- [`references/evidence.md`](references/evidence.md): evidence quality and report requirements
+- [`references/case-schema.md`](references/case-schema.md): machine-readable case record
+- [`references/report-template.md`](references/report-template.md): analyst-ready report structure
+- [`references/mcp.md`](references/mcp.md): local MCP integration and configuration boundaries
+- [`scripts/init_case.py`](scripts/init_case.py): deterministic hash-first manifest generator
+
+## Safety and responsible use
+
+Use only on artifacts, devices, services, and data you own or are explicitly authorized to assess. Do not contact real command-and-control infrastructure, submit credentials, bypass authentication or licensing, flash firmware, or deploy exploits. Use a disposable lab for unknown code and record the isolation boundary.
+
+## Privacy promise
+
+This repository contains only generic skill instructions, source code, documentation, tests, and dependency declarations. It intentionally excludes user samples, logs, credentials, virtual environments, host-specific configuration, private identifiers, and machine-specific absolute paths. Generated case records belong in ignored local directories and must not be committed.
+
+## Development
+
+Run the local checks before opening a pull request:
+
+```bash
+python3 -m pip install -r requirements-mcp.txt -r requirements-dev.txt
+python3 -m pytest -q
+python3 -m py_compile mcp_server.py scripts/init_case.py
+```
+
+## License
+
+MIT. See [`LICENSE`](LICENSE).
