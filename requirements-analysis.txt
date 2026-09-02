@@ -4,7 +4,17 @@
 capstone>=5.0,<6
 unicorn>=2.1,<3
 angr>=9.3,<10
+miasm>=0.1,<1
 frida-tools>=14,<15
 flare-capa>=9,<10
 flare-floss>=3,<4
 binwalk3>=3,<4
+pyelftools>=0.31,<1
+pefile>=2023.2.7,<2026
+scapy>=2.5,<3
+kaitaistruct>=0.10,<1
+volatility3>=2.11,<3
+
+# Optional backends require a separately resolved, exact lock in their own
+# isolated environment before they can be treated as available.
+# The current Linux x86_64 / CPython 3.13 snapshot is requirements-analysis.lock.txt.

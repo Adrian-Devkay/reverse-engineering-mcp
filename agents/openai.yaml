@@ -1,8 +1,8 @@
 interface:
-  display_name: "Reverse engineering-mcp"
-  short_description: "Advanced reverse engineering, vulnerability triage, and reproducible evidence reports"
+  display_name: "Apex Reverse Engineering"
+  short_description: "高階逆向、漏洞、越權、惡意程式與供應鏈研判"
   brand_color: "#7C3AED"
-  default_prompt: "Use $reverse-engineering-mcp to perform authorized, reproducible, evidence-driven advanced reverse engineering on the specified target."
+  default_prompt: "使用 $apex-reverse-engineering，對指定樣本、應用或韌體進行授權範圍內、可重現且以證據為核心的逆向、漏洞、越權、認證、惡意程式與供應鏈研判。"
 
 policy:
-  allow_implicit_invocation: true
+  allow_implicit_invocation: false

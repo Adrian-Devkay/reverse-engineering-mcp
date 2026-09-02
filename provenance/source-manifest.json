@@ -1,0 +1,237 @@
+{
+  "schema": "apex-reverse-engineering/source-manifest-v1",
+  "algorithm": "sha256",
+  "root": "skill-directory",
+  "files": [
+    {
+      "path": ".github/workflows/validate.yml",
+      "size_bytes": 517,
+      "sha256": "31f2fda3053388f83fd633edab8fd3caf9ee64fc00445c227041f9533753ebb3"
+    },
+    {
+      "path": "SKILL.md",
+      "size_bytes": 16947,
+      "sha256": "6159fa9dc4015f46f36655b44b153fd5696367f223629865ff2af0be2f592ffa"
+    },
+    {
+      "path": "agents/openai.yaml",
+      "size_bytes": 425,
+      "sha256": "5b5c859879e9778e0c3abf175fb7c84be74fa909b03b3592a3c19b3ed485f05f"
+    },
+    {
+      "path": "capability_contracts.py",
+      "size_bytes": 4111,
+      "sha256": "9207331b99288064cf9f6d6f789e4c0a407a09834d291c1f2203b27fe156c01f"
+    },
+    {
+      "path": "mcp_server.py",
+      "size_bytes": 22912,
+      "sha256": "d1d9dd90864cecc6ebbe3c13d019fa89134963cfc5a645c461c8afcf354c7f5d"
+    },
+    {
+      "path": "provenance/dependency-lock.json",
+      "size_bytes": 3809,
+      "sha256": "8e3d56680f37eeaa981081870d972127c6af1ea38bcc84342c430fea544afcff"
+    },
+    {
+      "path": "provenance/sbom.cdx.json",
+      "size_bytes": 4398,
+      "sha256": "740accb8ba067f5c40983eb39ad0c244b5972e6a26c371962276024e737459f0"
+    },
+    {
+      "path": "references/access-control.md",
+      "size_bytes": 8475,
+      "sha256": "747f6c046514a4fcb2fe32a98bb8b055411bc40fe92695a8bc614ad03770bd47"
+    },
+    {
+      "path": "references/authentication-testing.md",
+      "size_bytes": 5048,
+      "sha256": "e30fd1463c2d3e1a22e0896c129b0c018411b76b933bf9506df9430c434a8e83"
+    },
+    {
+      "path": "references/concurrency-sidechannels-dataflow.md",
+      "size_bytes": 1620,
+      "sha256": "8879ec20174300a201ec7e6dfe750ad1eeda29f26d3235cf0e6ac0e432df16b1"
+    },
+    {
+      "path": "references/crypto-update-supply-chain.md",
+      "size_bytes": 1973,
+      "sha256": "89c03cb028f06fa31b125b8437e5dbe1fc94c5c3764346bd249d7d5c02af22a0"
+    },
+    {
+      "path": "references/evidence.md",
+      "size_bytes": 1950,
+      "sha256": "f3a2d45e7d1e88763abb1c5f7cbdf6906289d90313f945fe0edbc5048a5d6af6"
+    },
+    {
+      "path": "references/fuzzing-and-crash-analysis.md",
+      "size_bytes": 2709,
+      "sha256": "4d4f25b4fe9469bb8481a94b8c4725e6b6b0c1e2f1158a931af1a5558fed079d"
+    },
+    {
+      "path": "references/isolated-lab.md",
+      "size_bytes": 1495,
+      "sha256": "5508d0f50bdaa0968e45c4e535c26baea82f40fe367283b6dcce809814665b66"
+    },
+    {
+      "path": "references/malware-analysis.md",
+      "size_bytes": 3249,
+      "sha256": "493f2d503c298facb41ccbbd4fd9ff063192425de5a9ac4505c28dfae0773832"
+    },
+    {
+      "path": "references/mcp.md",
+      "size_bytes": 3085,
+      "sha256": "9fa549918adf44aace8c5c194da3e1feaf26812aea0176f0f07bc2d9eed8e2c4"
+    },
+    {
+      "path": "references/modes.md",
+      "size_bytes": 6932,
+      "sha256": "a18bd7914b48155755ff8bdc53b2a72819760b8f960d35623107a0ca8f7a8234"
+    },
+    {
+      "path": "references/patch-and-version-diff.md",
+      "size_bytes": 1768,
+      "sha256": "ea618e78a4ea2c7e84511c39ca1fe792ae2177b972e35e45f5fbd657e8a0d6e9"
+    },
+    {
+      "path": "references/platform-boundaries.md",
+      "size_bytes": 1912,
+      "sha256": "2d61c3bc5ca387d6c1b78507d1213a86d6274b1ae02bb93721227cfba4d3b5b5"
+    },
+    {
+      "path": "references/protocol-format-analysis.md",
+      "size_bytes": 1321,
+      "sha256": "7fc7f4f060a548bda293870b4021c9cf5ffb18eced65fe235eaf8108432d55f2"
+    },
+    {
+      "path": "references/safe-operations.md",
+      "size_bytes": 2412,
+      "sha256": "6049bedc79bb8f8750306b5c2a572bf973b5f2b0bf6c2e5f5e245752bcb8d0e0"
+    },
+    {
+      "path": "references/supply-chain.md",
+      "size_bytes": 3562,
+      "sha256": "4be43e6a115ef7a01ba703511a0dba7f9e06196978ef992e505f81662053a90c"
+    },
+    {
+      "path": "references/toolchain.md",
+      "size_bytes": 3467,
+      "sha256": "b005ed042101d567e8bf0e080915c1ca90582b162584270dfc9f3b97a1e772e4"
+    },
+    {
+      "path": "references/vulnerability-triage.md",
+      "size_bytes": 2065,
+      "sha256": "450c8e0de7df483010f7b45c840d88f9018871a7518b098006fce8be3c77bd05"
+    },
+    {
+      "path": "references/web-recon.md",
+      "size_bytes": 2008,
+      "sha256": "fa4c0ff5301af40c4e238bea89a3a6ed273b26fd6ed66e406cde0fb594855d1e"
+    },
+    {
+      "path": "requirements-analysis.lock.txt",
+      "size_bytes": 2043,
+      "sha256": "851bfbdafeea395137ecdd800eceeca2618eef186f4c0e2031f30b55f9838fa8"
+    },
+    {
+      "path": "requirements-analysis.txt",
+      "size_bytes": 683,
+      "sha256": "f2635f630fef90871a0428fef9daa48bfc69aba0048e74eefaea24f5730f9097"
+    },
+    {
+      "path": "requirements-mcp.lock.txt",
+      "size_bytes": 3346,
+      "sha256": "02a6be0924fbbd4e50a5ca9abf1d8ac7f2e7aaf48b6d49dd4d0539668668381e"
+    },
+    {
+      "path": "requirements-mcp.txt",
+      "size_bytes": 210,
+      "sha256": "065fe9534695d14c6a5611820f2efbbb45ecbf00acf3133aa1c8a4acca769226"
+    },
+    {
+      "path": "scripts/capability_report.py",
+      "size_bytes": 6005,
+      "sha256": "45a80097aaa80c3c64d06c5e4ce2a003ada9443e765c16f67e1524ee33f3ad1e"
+    },
+    {
+      "path": "scripts/init_case.py",
+      "size_bytes": 2417,
+      "sha256": "9582e2fdf37e895339f4e27252d07a1aa88660bc0b6b5f77ab675e6c664e355c"
+    },
+    {
+      "path": "scripts/init_web_case.py",
+      "size_bytes": 2750,
+      "sha256": "bec9d844a36ff3674c143cc26951485e08de25476ccbc3e66a8b4fc490e823e6"
+    },
+    {
+      "path": "scripts/isolated_runner.py",
+      "size_bytes": 13373,
+      "sha256": "bcdabb5bb12b893a789ab64c58416a886908ed11e945202e49ab2fd6c48f736a"
+    },
+    {
+      "path": "scripts/lab_preflight.py",
+      "size_bytes": 1460,
+      "sha256": "745f98f11315001afac45e50965432302bc124f249d6e0405777bba208612e30"
+    },
+    {
+      "path": "scripts/probe_toolchain.py",
+      "size_bytes": 516,
+      "sha256": "262518fa7dd5a4b52bf48931d9e668f151c2c637202c3a64101c03f072c6a1f4"
+    },
+    {
+      "path": "scripts/provenance_report.py",
+      "size_bytes": 9447,
+      "sha256": "f71758770029c60edd646d4f1ab5d91d9988d6ba6c303b327cda37ae448a86bd"
+    },
+    {
+      "path": "scripts/source_integrity.py",
+      "size_bytes": 5307,
+      "sha256": "b76304e4726470e5dd4225f890cbc21ffaade701a710d245107b3050a08b788a"
+    },
+    {
+      "path": "scripts/verify_signature.py",
+      "size_bytes": 2770,
+      "sha256": "9157cf9059d7aa3511728e0c4b1fa208fe253df620953a67b2d8a64dfa3a1d97"
+    },
+    {
+      "path": "scripts/web_recon.py",
+      "size_bytes": 21577,
+      "sha256": "10d330ecc3711985d8054aa47bf6e0ec3446d01fe1929290b863a0a1a5e6abcd"
+    },
+    {
+      "path": "tests/test_hardening.py",
+      "size_bytes": 3403,
+      "sha256": "d64295303a2b4fcf04d54628d42a115e76bde44a3709a46c38c697099df0bffb"
+    },
+    {
+      "path": "tests/test_lab_runner.py",
+      "size_bytes": 1468,
+      "sha256": "2bde0bfe5d3ac5bc55bf957644ff4bd9685510a4be0fe4be0f8bfb21a81ac20e"
+    },
+    {
+      "path": "tests/test_provenance.py",
+      "size_bytes": 2329,
+      "sha256": "8016f31d829a440b3011395d0343f1d4c195f2936a61b0c567adb5cdd140efd2"
+    },
+    {
+      "path": "tests/test_skill_integrity.py",
+      "size_bytes": 5348,
+      "sha256": "429eb92b4f83eeba1abca7d33eb768092eb47c1a86dc90858f06a5dfbd86b041"
+    },
+    {
+      "path": "tests/test_toolchain_registry.py",
+      "size_bytes": 2191,
+      "sha256": "1655fa438a97891b4651e1e09e5fddd7ae14fa8d2ba6281f4a619c9200003b5a"
+    },
+    {
+      "path": "tests/test_web_recon.py",
+      "size_bytes": 3109,
+      "sha256": "b6fd4dfbafe4efee9d3dc485d3f1f5d8895165ff5c7f64048bda17a92fc47ec1"
+    },
+    {
+      "path": "toolchain_registry.py",
+      "size_bytes": 12227,
+      "sha256": "8811800f7bac793d8392541cddc7fb4359c0e64352c3c46176fd78efd1c48612"
+    }
+  ]
+}
