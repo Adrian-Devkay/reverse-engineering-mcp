@@ -9,6 +9,16 @@
       "sha256": "31e5c97e18618dc97bea203a80f960574a614940c5de1c6e35245379164667b8"
     },
     {
+      "path": "LICENSE",
+      "size_bytes": 1093,
+      "sha256": "61d0795d6048ee1a5436270774bc11399f5a22a6364f58190c9edf014e1e61f2"
+    },
+    {
+      "path": "README.md",
+      "size_bytes": 11749,
+      "sha256": "985783a85b4ec78e57735f971dd1ffad37205c932d7efe54986221745eacbf47"
+    },
+    {
       "path": "SKILL.md",
       "size_bytes": 16947,
       "sha256": "6159fa9dc4015f46f36655b44b153fd5696367f223629865ff2af0be2f592ffa"
@@ -22,6 +32,11 @@
       "path": "capability_contracts.py",
       "size_bytes": 4111,
       "sha256": "9207331b99288064cf9f6d6f789e4c0a407a09834d291c1f2203b27fe156c01f"
+    },
+    {
+      "path": "docs/architecture.svg",
+      "size_bytes": 6619,
+      "sha256": "2aa9d0057687f071dc4fbc34a791bae428cf2ee42cbfc762dd332484f85c4538"
     },
     {
       "path": "mcp_server.py",
