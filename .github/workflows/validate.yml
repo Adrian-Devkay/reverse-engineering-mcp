@@ -16,7 +16,9 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.13"
+      - name: Install core dependencies
+        run: python -m pip install --require-hashes -r requirements-mcp.lock.txt
       - name: Compile Python sources
         run: python -m compileall -q mcp_server.py scripts tests
       - name: Run integrity tests

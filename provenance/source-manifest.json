@@ -5,8 +5,8 @@
   "files": [
     {
       "path": ".github/workflows/validate.yml",
-      "size_bytes": 517,
-      "sha256": "31f2fda3053388f83fd633edab8fd3caf9ee64fc00445c227041f9533753ebb3"
+      "size_bytes": 638,
+      "sha256": "31e5c97e18618dc97bea203a80f960574a614940c5de1c6e35245379164667b8"
     },
     {
       "path": "SKILL.md",
